@@ -5,24 +5,23 @@ from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
 import ScenarioWeek4
 
-def polygons():
-    output = []
-    with open('input.txt') as f:
-        for line in f:
-            inputLine = line.split(' ')[1].split('#')
-            for poly in inputLine[1].split(';'):
-                output.append(poly)
 
-    return output
+def plotRobots(plt):
+    x, y = [], []
+    for robot in ScenarioWeek4.robots():
+        x.append(robot[0])
+        y.append(robot[1])
+
+    plt.scatter(x[1:], y[1:])
+    plt.scatter(x[0:1], y[0:1], color="r")
 
 fig, ax = plt.subplots()
 patches = []
 N = 5
 
-print(polygons())
+plotRobots(ax)
 
 for i in ScenarioWeek4.polygon():
-    print(np.array(i))
     polygon = Polygon(np.array(i), True)
     patches.append(polygon)
 

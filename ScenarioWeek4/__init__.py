@@ -30,7 +30,7 @@ def robots():
             inputLine = line.split(' ')[1].split('#')
             for item in re.split('\),\(|\)|\(', inputLine[0])[1:-1]:
                 pair = item.split(',')
-                output.append([pair[0], pair[1]])
+                output.append([float(pair[0]), float(pair[1])])
 
     return output
 
