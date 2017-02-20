@@ -8,8 +8,13 @@ import matplotlib
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
 
-# class Coordinate:
-#     def __init__(self, isRobot, x_coordinate, y_coordinate):
+
+class Coordinate:
+    def __init__(self, isRobot, x_coordinate, y_coordinate):
+        self.isRobot = isRobot
+        self.x = x_coordinate
+        self.y = y_coordinate
+
 
 def polygon():
     output = []
@@ -44,8 +49,57 @@ def distance(x1, y1, x2, y2):
     return math.sqrt((x3 * x3) + (y3 * y3))
 
 
-def intersect(x1, y1, x2, y2):
+def __perp(a):
+    b = np.empty_like(a)
+    b[0] = -a[1]
+    b[1] = a[0]
+    return b
 
 
+def __isBetween(a, b, c):
+    crossproduct = (c.y - a.y) * (b.x - a.x) - (c.x - a.x) * (b.y - a.y)
+    if abs(crossproduct) != 0:
+        return False   # (or != 0 if using integers)
+
+    dotproduct = (c.x - a.x) * (b.x - a.x) + (c.y - a.y)*(b.y - a.y)
+    if dotproduct < 0:
+        return False
+
+    squaredlengthba = (b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y)
+    if dotproduct > squaredlengthba:
+        return False
+
+    return True
+
+def intersect(coordinateA1, coordinateA2, coordinateB1, coordinateB2):
+
+    a1 = np.array([coordinateA1.x, coordinateA1.y])
+    a2 = np.array([coordinateA2.x, coordinateA2.y])
+    b1 = np.array([coordinateB1.x, coordinateB1.y])
+    b2 = np.array([coordinateB2.x, coordinateB2.y])
+
+    da = a2 - a1
+    db = b2 - b1
+    dp = a1 - b1
+    dap = __perp(da)
+    denom = np.dot(dap, db)
+    num = np.dot(dap, dp)
+    x, y = (num / denom.astype(float)) * db + b1
+    c = Coordinate(False, x, y)
+
+    if __isBetween(coordinateA1, coordinateA2, c) and __isBetween(coordinateB2, coordinateB1, c):
+        return True
+
+    return False
+
+
+
+
+a1 = Coordinate(True, 0, 1)
+a2 = Coordinate(True, 3, 5)
+b1 = Coordinate(True, 3, 2)
+b2 = Coordinate(True, 3, 4)
+
+print (intersect(a1, a2, b1, b2))
 
 
