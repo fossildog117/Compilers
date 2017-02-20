@@ -9,13 +9,14 @@ from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
 
 
+# coordinate class
 class Coordinate:
     def __init__(self, isRobot, x_coordinate, y_coordinate):
         self.isRobot = isRobot
         self.x = x_coordinate
         self.y = y_coordinate
 
-
+# Get the list of polygons
 def polygon():
     output = []
     with open('input.txt') as f:
@@ -29,7 +30,7 @@ def polygon():
                 output.append(values)
     return output
 
-
+# Get all the robots, the first robot is the starting robot
 def robots():
     output = []
 
@@ -42,7 +43,7 @@ def robots():
 
     return output
 
-
+# distance between two points with coordinates (x1, y1) and (x2, y2)
 def distance(x1, y1, x2, y2):
     x3 = x1 - x2
     y3 = y1 - y2
@@ -71,6 +72,9 @@ def __isBetween(a, b, c):
 
     return True
 
+# Check if two lines intersect
+# line 1 is between coordinateA1 and coordinateA2
+# line 2 is between coordinateB1 and coordinateB2
 def intersect(coordinateA1, coordinateA2, coordinateB1, coordinateB2):
 
     a1 = np.array([coordinateA1.x, coordinateA1.y])
