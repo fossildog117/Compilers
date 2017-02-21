@@ -15,13 +15,11 @@ def polygonEdges():
         edges = []
         for i in range(-1, len(shape) - 1):
             edges.append([ScenarioWeek4.Coordinate(False, shape[i][0], shape[i][1]), ScenarioWeek4.Coordinate(False, shape[i + 1][0], shape[i + 1][1])])
-
         polygonEdgeArray.append(edges)
     return polygonEdgeArray
 
 
 edges = polygonEdges()
-
 
 def plotRobots(plt):
     x, y = [], []
@@ -30,13 +28,35 @@ def plotRobots(plt):
     for robot in points:
         x.append(robot[0])
         y.append(robot[1])
-        coordinates.append(ScenarioWeek4.Coordinate(True, x, y))
+        coordinates.append(ScenarioWeek4.Coordinate(True, robot[0], robot[1]))
 
     plt.scatter(x[1:], y[1:])
     plt.scatter(x[0:1], y[0:1], color="r")
     lines = zip(*itertools.chain.from_iterable(itertools.combinations(points, 2)))
 
-    plt.plot(*lines)
+    permutations = []
+
+    for i in range(0, len(coordinates)):
+        for j in range(i, len(coordinates)):
+            permutations.append((coordinates[i], coordinates[j]))
+
+    new = []
+    plotList = []
+    removeList = []
+    for coordinate in permutations:
+        for edge in edges:
+            for c in edge:
+                if ScenarioWeek4.intersect(coordinate[0], coordinate[1], c[0], c[1]) is True:
+                    removeList.append((coordinate[0], coordinate[1]))
+                else:
+                    plotList.append((coordinate[0], coordinate[1]))
+
+    for item in removeList:
+        while item in plotList:
+            plotList.remove(item)
+
+    for plot in plotList:
+        plt.plot([plot[0].x, plot[1].x], [plot[0].y, plot[1].y])
 
 
 def printLines(polygons, plt):

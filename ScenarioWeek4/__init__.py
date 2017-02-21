@@ -57,8 +57,9 @@ def __perp(a):
 
 
 def __isBetween(a, b, c):
-    crossproduct = (c.y - a.y) * (b.x - a.x) - (c.x - a.x) * (b.y - a.y)
-    if abs(crossproduct) != 0:
+    crossproduct = abs((c.y - a.y) * (b.x - a.x) - (c.x - a.x) * (b.y - a.y))
+
+    if crossproduct > 0.00000001:
         return False   # (or != 0 if using integers)
 
     dotproduct = (c.x - a.x) * (b.x - a.x) + (c.y - a.y)*(b.y - a.y)
@@ -78,11 +79,18 @@ def intersect(coordinateA1, coordinateA2, coordinateB1, coordinateB2):
     b1 = np.array([coordinateB1.x, coordinateB1.y])
     b2 = np.array([coordinateB2.x, coordinateB2.y])
 
+    # print([a1,a2,b1,b2])
+    # print("------------")
+
     da = a2 - a1
     db = b2 - b1
     dp = a1 - b1
     dap = __perp(da)
     denom = np.dot(dap, db)
+
+    if denom == 0:
+        return False
+
     num = np.dot(dap, dp)
     x, y = (num / denom.astype(float)) * db + b1
     c = Coordinate(False, x, y)
@@ -95,10 +103,10 @@ def intersect(coordinateA1, coordinateA2, coordinateB1, coordinateB2):
 
 
 
-a1 = Coordinate(True, 0, 1)
-a2 = Coordinate(True, 3, 5)
-b1 = Coordinate(True, 3, 2)
-b2 = Coordinate(True, 3, 4)
+a1 = Coordinate(True, 2, 0)
+a2 = Coordinate(True, 9, 0)
+b1 = Coordinate(True, 4, 1)
+b2 = Coordinate(True, 8, 1)
 
 print (intersect(a1, a2, b1, b2))
 
