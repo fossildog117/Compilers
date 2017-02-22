@@ -87,5 +87,4 @@ colors = 100 * np.random.rand(len(patches))
 p.set_array(np.array(colors))
 
 ax.add_collection(p)
-
 plt.show()

@@ -21,12 +21,15 @@ def polygon():
     with open('input.txt') as f:
         for line in f:
             inputLine = line.replace(" ", "").split(':')[1].split('#')
-            for poly in inputLine[1].split(';'):
-                values = []
-                for item in re.split('\),\(|\)|\(', poly)[1:-1]:
-                    pair = item.split(',')
-                    values.append([float(pair[0]), float(pair[1])])
-                output.append(values)
+            try:
+                for poly in inputLine[1].split(';'):
+                    values = []
+                    for item in re.split('\),\(|\)|\(', poly)[1:-1]:
+                        pair = item.split(',')
+                        values.append([float(pair[0]), float(pair[1])])
+                    output.append(values)
+            except:
+                print("----")
     return output
 
 
@@ -99,8 +102,6 @@ def intersect(coordinateA1, coordinateA2, coordinateB1, coordinateB2):
         return True
 
     return False
-
-
 
 
 a1 = Coordinate(True, 2, 0)
