@@ -49,9 +49,6 @@ class Point(object):
         self.y = float(y)
         self.polygon_id = polygon_id
 
-    # def __lt__(self, other):
-    #     return self.x + self.y < other.x + other.y
-
     def __eq__(self, point):
         return point and self.x == point.x and self.y == point.y
 
@@ -174,17 +171,18 @@ class Graph(object):
     def __repr__(self):
         return self.__str__()
 
-#
-# pointArray = []
-# id = 0
-# for polygon in polygons:
-#     p = []
-#     for point in polygon:
-#         p.append(Point(point[0], point[1], id))
-#         id += 1
-#     pointArray.append(p)
-#
-#
-# graph = Graph(pointArray)
+
+pointArray = []
+id = 0
+for polygon in polygons:
+    p = []
+    for point in polygon:
+        p.append(Point(point[0], point[1], id))
+        id += 1
+    pointArray.append(p)
+
+
+graph = Graph(pointArray)
+print()
 
 

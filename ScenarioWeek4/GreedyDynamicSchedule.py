@@ -9,15 +9,9 @@ print("number of robots: {number_of_robots}".format(number_of_robots=number_of_r
 
 infinity = 1000000000000000000
 
-class Mapping:
-
-    def __init__(self, robotStartLocation, robotEndLocation, coordinatePath):
-        self.start = robotStartLocation
-        self.end = robotEndLocation
-        self.path = coordinatePath
-
 class Robot:
-    def __init__(self, x, y, status):
+
+    def __init__(self, x, y, status, isRobot):
         self.x = x
         self.y = y
         self.status = status
@@ -25,6 +19,7 @@ class Robot:
         self.distanceAcquiredSinceLastJump = 0
         self.remainingDistance = infinity
         self.intermediatePoints = [[x, y]]
+        self.isRobot = isRobot
 
 
 def shortestDistance(firstRobot, secondRobot, shapeList):
@@ -38,12 +33,12 @@ def shortestDistance(firstRobot, secondRobot, shapeList):
     firstRobotPosition, secondRobotPosition = Coordinate(True, firstRobot.x, firstRobot.y), Coordinate(True,
                                                                                                        secondRobot.x,
                                                                                                        secondRobot.y)
-
     # foreach shape
     for shape in shapeList:
         for i in range(-1, len(shape) - 1):
             e1, e2 = Coordinate(False, shape[i][0], shape[i][1]), Coordinate(False, shape[i + 1][0], shape[i + 1][1])
             if intersect(firstRobotPosition, secondRobotPosition, e1, e2):
+                # find distance
                 print("intersection")
 
 

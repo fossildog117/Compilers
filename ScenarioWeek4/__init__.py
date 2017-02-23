@@ -9,7 +9,7 @@ from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
 
 
-class Coordinate:
+class Coordinate(object):
     def __init__(self, isRobot, x_coordinate, y_coordinate):
         self.isRobot = isRobot
         self.x = x_coordinate
@@ -104,10 +104,10 @@ def intersect(coordinateA1, coordinateA2, coordinateB1, coordinateB2):
     return False
 
 
-a1 = Coordinate(True, 2, 0)
-a2 = Coordinate(True, 9, 0)
-b1 = Coordinate(True, 4, 1)
-b2 = Coordinate(True, 8, 1)
+a1 = Coordinate(True, 1, 2)
+a2 = Coordinate(True, 4, 4)
+b1 = Coordinate(True, 3, 4)
+b2 = Coordinate(True, 3, 2)
 
 print (intersect(a1, a2, b1, b2))
 
