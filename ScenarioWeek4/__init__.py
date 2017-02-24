@@ -7,7 +7,9 @@ import matplotlib.pyplot as plt
 import matplotlib
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
+import decimal
 
+inf = 1000000000000000
 
 class Coordinate(object):
     def __init__(self, isRobot, x_coordinate, y_coordinate):
@@ -95,7 +97,7 @@ def intersect(coordinateA1, coordinateA2, coordinateB1, coordinateB2):
         return False
 
     num = np.dot(dap, dp)
-    x, y = (num / denom.astype(float)) * db + b1
+    x, y = (num / denom) * db + b1
     c = Coordinate(False, x, y)
 
     if __isBetween(coordinateA1, coordinateA2, c) and __isBetween(coordinateB2, coordinateB1, c):
@@ -104,10 +106,10 @@ def intersect(coordinateA1, coordinateA2, coordinateB1, coordinateB2):
     return False
 
 
-a1 = Coordinate(True, 1, 2)
-a2 = Coordinate(True, 4, 4)
-b1 = Coordinate(True, 3, 4)
-b2 = Coordinate(True, 3, 2)
+a1 = Coordinate(True, 6, 2)
+a2 = Coordinate(True, 1, 4)
+b1 = Coordinate(True, 4, 1)
+b2 = Coordinate(True, 4, 4)
 
 print (intersect(a1, a2, b1, b2))
 
