@@ -25,10 +25,9 @@ parser code {:
 :};
 
 // Do something with ILLEGAL_CHARARCTER or drop it.
-terminal MAIN, KBOOL, KCHAR, DICT, KINT, RATIONAL, FLOAT, TOP, SEQ, IN, TRUE, FALSE, TDEF, FDEF, VOID, ALIAS, IF, ELIF, ELSE, FORALL, LOOP, POOL, READ, PRINT, RETURN, OD, DO, FI, LEN, LESSEQUAL, MOREEQUAL, ISEQUAL, NOTEQUAL, LCURLY, RCURLY, LSQUARE, RSQUARE, EQUAL, SEMICOL, PLUS, MINUS, MULT, DIV, LESSTHAN, NOT, AND, OR, POWER, MORETHAN, DCOLON, COLON, INTEGER, IDENTIFIER, CHARACTER, KFLOAT, KRAT, COMMA, THEN, STRING, LPAREN, RPAREN, DOT, MIMP, QUEST, BREAK;
-terminal BADCHAR;
+terminal MAIN, KBOOL, KCHAR, DICT, KINT, RATIONAL, FLOAT, TOP, SEQ, IN, TRUE, FALSE, TDEF, FDEF, ALIAS, IF, ELSE, LOOP, POOL, READ, PRINT, RETURN, FI, LEN, LESSEQUAL, MOREEQUAL, ISEQUAL, NOTEQUAL, LCURLY, RCURLY, LSQUARE, RSQUARE, EQUAL, SEMICOL, PLUS, MINUS, MULT, DIV, LESSTHAN, NOT, AND, OR, POWER, MORETHAN, DCOLON, COLON, INTEGER, IDENTIFIER, CHARACTER, KFLOAT, KRAT, COMMA, THEN, STRING, LPAREN, RPAREN, DOT, MIMP, QUEST, BREAK;
 
-nonterminal top_level, elif, functions, statement, expression, expressions, main, func, statements, function_call, type, operator, assignment, keyvals, typedef, typeids, index, expr_no, numeric, nested_id, alias, type_void, input, output, controlflow, breakloop, function_calls;
+nonterminal source_code, functions, statement, expression, expressions, main, func, statements, function_call, type, operator, assignment, keyvals, typedef, typeids, index, expr_no, numeric, nested_id, alias, input, output, controlflow;
 precedence left OR, AND, NOT, MIMP;
 precedence left ISEQUAL, NOTEQUAL, LESSTHAN, LESSEQUAL, MORETHAN, MOREEQUAL;
 precedence left DCOLON;
@@ -37,17 +36,7 @@ precedence left DIV, MULT;
 precedence left POWER;
 precedence left LPAREN, RPAREN;
 
-/* The grammar 
-main
-functions
-func
-typedef
-alias
-type
-array index
-numeric
-*/
-top_level ::= functions main functions;
+source_code ::= functions main functions;
 
 functions ::= functions func
               |
@@ -139,7 +128,7 @@ type ::=    KFLOAT
             |
             SEQ LESSTHAN TOP MORETHAN
             |
-            IDENTIFIER /*for custom types*/;
+            IDENTIFIER;
         
         
 assignment ::= nested_id COLON type EQUAL expressions SEMICOL

@@ -51,19 +51,14 @@ Comment = #.*\n|\/#(.*[\n]*)*#\/
     "F"             { return symbol(sym.FALSE);     }
     "tdef"          { return symbol(sym.TDEF);      }
     "fdef"          { return symbol(sym.FDEF);      }
-    "void"          { return symbol(sym.VOID);      }
     "alias"         { return symbol(sym.ALIAS);     }
     "if"            { return symbol(sym.IF);        }
-    "elif"          { return symbol(sym.ELIF);      }
     "else"          { return symbol(sym.ELSE);      }
-    "forall"        { return symbol(sym.FORALL);    }
     "loop"          { return symbol(sym.LOOP);      }
     "pool"          { return symbol(sym.POOL);      }
     "read"          { return symbol(sym.READ);      }
     "print"         { return symbol(sym.PRINT);     }
     "return"        { return symbol(sym.RETURN);    }
-    "od"            { return symbol(sym.OD);        }
-    "do"            { return symbol(sym.DO);        }
     "fi"            { return symbol(sym.FI);        }
     "len"           { return symbol(sym.LEN);       }
     "then"          { return symbol(sym.THEN);      }
@@ -107,9 +102,4 @@ Comment = #.*\n|\/#(.*[\n]*)*#\/
     "?"             { return symbol(sym.QUEST);     }
 }
 
-[^]  {
-  System.out.println("file:" + (yyline+1) +
-    ":0: Error: Invalid input '" + yytext()+"'");
-  return symbol(sym.BADCHAR);
-}
 
