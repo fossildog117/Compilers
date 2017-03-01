@@ -1,9 +1,9 @@
 # Lexer and Parser
 
-Please put your Lexer.lex and Parser.cup files into the src subdirectory.
+This is a compiler for compiling the Z Language.
 
-To build, issue `make`.
+The language specification can be found in the project.pdf file.
 
-To test, issue `make test`.
+cd into the project directory and run ./natedog.sh all to run test cases on the compiler
 
-To run on a single test file, issue `./bin/sc tests/open/<some test>.s`
+
