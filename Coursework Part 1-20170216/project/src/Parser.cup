@@ -1,0 +1,257 @@
+import java_cup.runtime.*;
+import java.util.ArrayList;
+
+scan with {: return lexer.next_token(); :};
+
+parser code {:
+
+  public boolean syntaxErrors = false;
+
+  private Lexer lexer;
+
+  public Parser(Lexer lex) {
+    super(lex);
+    lexer = lex;
+  }
+
+  public void syntax_error(Symbol current_token) {
+    report_error(
+    "Syntax error at line " + (current_token.left+1) + ", column "
+    + current_token.right + " ", null
+    );
+  syntaxErrors = true;
+  }
+
+:};
+
+// Do something with ILLEGAL_CHARARCTER or drop it.
+terminal MAIN, KBOOL, KCHAR, DICT, KINT, RATIONAL, FLOAT, TOP, SEQ, IN, TRUE, FALSE, TDEF, FDEF, VOID, ALIAS, IF, ELIF, ELSE, FORALL, LOOP, POOL, READ, PRINT, RETURN, OD, DO, FI, LEN, LESSEQUAL, MOREEQUAL, ISEQUAL, NOTEQUAL, LCURLY, RCURLY, LSQUARE, RSQUARE, EQUAL, SEMICOL, PLUS, MINUS, MULT, DIV, LESSTHAN, NOT, AND, OR, POWER, MORETHAN, DCOLON, COLON, INTEGER, IDENTIFIER, CHARACTER, KFLOAT, KRAT, COMMA, THEN, STRING, LPAREN, RPAREN, DOT, MIMP, QUEST, BREAK;
+terminal BADCHAR;
+
+nonterminal top_level, elif, functions, statement, expression, expressions, main, func, statements, function_call, type, operator, assignment, keyvals, typedef, typeids, index, expr_no, numeric, nested_id, alias, type_void, input, output, controlflow, breakloop, function_calls;
+precedence left OR, AND, NOT, MIMP;
+precedence left ISEQUAL, NOTEQUAL, LESSTHAN, LESSEQUAL, MORETHAN, MOREEQUAL;
+precedence left DCOLON;
+precedence left PLUS, MINUS;
+precedence left DIV, MULT;
+precedence left POWER;
+precedence left LPAREN, RPAREN;
+
+/* The grammar 
+main
+functions
+func
+typedef
+alias
+type
+array index
+numeric
+*/
+top_level ::= functions main functions;
+
+functions ::= functions func
+              |
+              functions assignment //globals
+              |
+              functions typedef
+              |
+              functions alias
+              |
+              ;
+              
+alias ::=   ALIAS type IDENTIFIER SEMICOL;
+
+statements ::=  statements statement
+			    |
+			    statement;
+
+
+statement ::=   expr_no SEMICOL
+                |
+                assignment
+                |
+                nested_id ISEQUAL expression SEMICOL
+                |
+                READ nested_id SEMICOL
+                |
+                input
+                |
+                output
+                |
+                controlflow
+                |
+                IF LPAREN expression RPAREN THEN statements FI
+                |
+                IF LPAREN expression RPAREN THEN statements ELSE statements FI
+                |
+                RETURN expr_no SEMICOL
+                |
+                ALIAS type type SEMICOL
+                |
+                BREAK INTEGER SEMICOL
+                |
+                BREAK SEMICOL
+                |
+                typedef;
+
+         
+typedef ::= TDEF IDENTIFIER LCURLY typeids RCURLY SEMICOL
+            |
+            TDEF IDENTIFIER LCURLY RCURLY SEMICOL;
+
+typeids ::=     IDENTIFIER COLON type
+                |
+                typeids COMMA IDENTIFIER COLON type;
+       
+main ::= MAIN LCURLY statements RCURLY SEMICOL;
+
+func ::=    FDEF IDENTIFIER LPAREN typeids RPAREN LCURLY statements RCURLY COLON type SEMICOL
+			|
+			FDEF IDENTIFIER LPAREN typeids RPAREN LCURLY statements RCURLY SEMICOL
+            |
+            FDEF IDENTIFIER LPAREN RPAREN LCURLY statements RCURLY COLON type SEMICOL
+            |
+            FDEF IDENTIFIER LPAREN RPAREN LCURLY statements RCURLY SEMICOL
+            |
+            FDEF IDENTIFIER LPAREN RPAREN LCURLY RCURLY COLON type SEMICOL;        
+        
+type ::=    KFLOAT 
+            | 
+            KRAT 
+            |
+            KBOOL
+            | 
+            KINT 
+            | 
+            KCHAR 
+            |
+            STRING
+            | 
+            DICT LESSTHAN type COMMA type MORETHAN
+            | 
+            DICT LESSTHAN TOP COMMA type MORETHAN
+            | 
+            DICT LESSTHAN type COMMA TOP MORETHAN
+            |
+            DICT LESSTHAN TOP COMMA TOP MORETHAN
+            |
+            SEQ LESSTHAN type MORETHAN
+            |
+            SEQ LESSTHAN TOP MORETHAN
+            |
+            IDENTIFIER /*for custom types*/;
+        
+        
+assignment ::= nested_id COLON type EQUAL expressions SEMICOL
+			|
+			nested_id EQUAL expressions SEMICOL
+			|
+			nested_id COLON type SEMICOL;
+
+input ::= READ STRING SEMICOL;
+
+output ::= PRINT expressions SEMICOL;
+				
+function_call ::=   QUEST expression QUEST IDENTIFIER LPAREN expressions RPAREN
+                    |
+                    QUEST expression QUEST IDENTIFIER LPAREN RPAREN;
+                
+controlflow ::= LOOP statements POOL;
+
+expressions ::= expression
+                |
+                expressions COMMA expression;
+                
+expr_no ::= expression
+            |
+            ;
+
+
+expression ::=  nested_id
+                |
+                numeric
+                |
+                CHARACTER
+                |
+                STRING
+                |
+                TRUE
+                |
+                FALSE
+                |
+                LEN
+                |
+                expression operator expression
+                |
+                NOT expression
+                |
+                LPAREN expression RPAREN
+                |
+                function_call
+                |
+                LSQUARE expressions RSQUARE
+                |
+                IDENTIFIER LSQUARE numeric COLON RSQUARE
+                |
+                IDENTIFIER LSQUARE COLON numeric RSQUARE
+                |
+                IDENTIFIER LSQUARE numeric COLON numeric RSQUARE
+                |
+                LSQUARE RSQUARE
+                |
+                nested_id index
+                |
+                IDENTIFIER IN nested_id
+                |
+                LCURLY keyvals RCURLY
+                |
+                LCURLY RCURLY;
+
+nested_id ::= 	IDENTIFIER
+				|
+				nested_id DOT LEN
+				|
+				nested_id DOT IDENTIFIER
+				|
+				IDENTIFIER LSQUARE IDENTIFIER RSQUARE
+				|
+				IDENTIFIER LSQUARE INTEGER RSQUARE;
+
+
+numeric ::= INTEGER
+            |
+            FLOAT
+            |
+            RATIONAL
+            |
+            MINUS numeric;
+
+operator ::=    PLUS
+                |
+                MINUS
+                |
+                MULT
+                |
+                DIV
+                |
+                ISEQUAL
+                |
+                NOTEQUAL
+                |
+                LESSEQUAL
+                |
+                MOREEQUAL
+                |
+                LESSTHAN
+                |
+                MORETHAN
+                |
+                POWER
+                |
+                AND
+                |
+                OR
+                |
+                MIMP
+                |
+                DCOLON;
