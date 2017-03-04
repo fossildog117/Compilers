@@ -1,4 +1,4 @@
+x:int := 0;
 main {
-	x : float := 3.0;
 	return;
 };
