@@ -1,0 +1,4 @@
+y:int;
+main {
+	return;
+};

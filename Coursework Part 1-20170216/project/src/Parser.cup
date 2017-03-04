@@ -102,7 +102,9 @@ func ::=    FDEF IDENTIFIER LPAREN typeids RPAREN LCURLY statements RCURLY COLON
             |
             FDEF IDENTIFIER LPAREN RPAREN LCURLY statements RCURLY SEMICOL
             |
-            FDEF IDENTIFIER LPAREN RPAREN LCURLY RCURLY COLON type SEMICOL;        
+            FDEF IDENTIFIER LPAREN RPAREN LCURLY RCURLY COLON type SEMICOL
+            |
+            FDEF IDENTIFIER LPAREN RPAREN LCURLY RCURLY SEMICOL;        
         
 type ::=    KFLOAT 
             | 
@@ -180,15 +182,9 @@ expression ::=  nested_id
                 |
                 LSQUARE expressions RSQUARE
                 |
-                IDENTIFIER LSQUARE numeric COLON RSQUARE
-                |
-                IDENTIFIER LSQUARE COLON numeric RSQUARE
-                |
-                IDENTIFIER LSQUARE numeric COLON numeric RSQUARE
+                IDENTIFIER index
                 |
                 LSQUARE RSQUARE
-                |
-                nested_id index
                 |
                 IDENTIFIER IN nested_id
                 |
@@ -200,19 +196,16 @@ nested_id ::= 	IDENTIFIER
 				|
 				nested_id DOT LEN
 				|
-				nested_id DOT IDENTIFIER
-				|
-				IDENTIFIER LSQUARE IDENTIFIER RSQUARE
-				|
-				IDENTIFIER LSQUARE INTEGER RSQUARE
-                |
-                IDENTIFIER LSQUARE COLON RSQUARE
-                |
-                IDENTIFIER LSQUARE IDENTIFIER COLON RSQUARE
-                |
-                IDENTIFIER LSQUARE COLON IDENTIFIER RSQUARE
-                |
-                IDENTIFIER LSQUARE IDENTIFIER COLON IDENTIFIER RSQUARE;
+				nested_id DOT IDENTIFIER;
+
+
+index ::= LSQUARE expression RSQUARE
+          |
+          LSQUARE expr_no COLON expr_no RSQUARE
+          |
+          index LSQUARE expression RSQUARE
+          |
+          index LSQUARE expr_no COLON expr_no RSQUARE;
 
 
 keyvals ::= expression COLON expression 
