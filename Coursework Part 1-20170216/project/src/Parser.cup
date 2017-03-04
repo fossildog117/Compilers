@@ -131,11 +131,11 @@ type ::=    KFLOAT
             IDENTIFIER;
         
         
-assignment ::= nested_id COLON type EQUAL expressions SEMICOL
+assignment ::= IDENTIFIER COLON type EQUAL expressions SEMICOL
 			|
 			nested_id EQUAL expressions SEMICOL
 			|
-			nested_id COLON type SEMICOL;
+			IDENTIFIER COLON type SEMICOL;
 
 input ::= READ STRING SEMICOL;
 
@@ -204,7 +204,20 @@ nested_id ::= 	IDENTIFIER
 				|
 				IDENTIFIER LSQUARE IDENTIFIER RSQUARE
 				|
-				IDENTIFIER LSQUARE INTEGER RSQUARE;
+				IDENTIFIER LSQUARE INTEGER RSQUARE
+                |
+                IDENTIFIER LSQUARE COLON RSQUARE
+                |
+                IDENTIFIER LSQUARE IDENTIFIER COLON RSQUARE
+                |
+                IDENTIFIER LSQUARE COLON IDENTIFIER RSQUARE
+                |
+                IDENTIFIER LSQUARE IDENTIFIER COLON IDENTIFIER RSQUARE;
+
+
+keyvals ::= expression COLON expression 
+            |
+            keyvals COMMA expression COLON expression;
 
 
 numeric ::= INTEGER
