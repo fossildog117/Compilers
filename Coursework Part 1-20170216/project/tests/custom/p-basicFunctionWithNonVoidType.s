@@ -1,0 +1,7 @@
+fdef x () {
+
+};
+
+main {
+    return;
+};

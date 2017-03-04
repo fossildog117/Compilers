@@ -1,0 +1,4 @@
+main {
+    funccall(,);
+    return;
+};
