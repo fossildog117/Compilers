@@ -192,26 +192,11 @@ expression ::=  nested_id
                 |
                 LCURLY RCURLY;
 
-nested_id ::= 	IDENTIFIER
-				|
-				nested_id DOT LEN
-				|
-<<<<<<< HEAD
-				nested_id DOT IDENTIFIER
-				|
-				IDENTIFIER LSQUARE IDENTIFIER RSQUARE
-				|
-				IDENTIFIER LSQUARE INTEGER RSQUARE
+nested_id ::=   IDENTIFIER
                 |
-                IDENTIFIER LSQUARE COLON RSQUARE
+                nested_id DOT LEN
                 |
-                IDENTIFIER LSQUARE IDENTIFIER COLON RSQUARE
-                |
-                IDENTIFIER LSQUARE COLON IDENTIFIER RSQUARE
-                |
-                IDENTIFIER LSQUARE IDENTIFIER COLON IDENTIFIER RSQUARE;
-=======
-				nested_id DOT IDENTIFIER;
+                nested_id DOT IDENTIFIER;
 
 
 index ::= LSQUARE expression RSQUARE
@@ -221,8 +206,6 @@ index ::= LSQUARE expression RSQUARE
           index LSQUARE expression RSQUARE
           |
           index LSQUARE expr_no COLON expr_no RSQUARE;
->>>>>>> origin/z-compiler
-
 
 keyvals ::= expression COLON expression 
             |
