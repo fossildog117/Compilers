@@ -1,0 +1,4 @@
+main {
+    A:int;
+    return;
+};

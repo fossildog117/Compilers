@@ -1,4 +1,4 @@
 main {
-    hello.world:int;
+    hello world:int;
     return;
 };
