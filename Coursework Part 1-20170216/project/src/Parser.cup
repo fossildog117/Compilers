@@ -204,7 +204,20 @@ nested_id ::= 	IDENTIFIER
 				|
 				IDENTIFIER LSQUARE IDENTIFIER RSQUARE
 				|
-				IDENTIFIER LSQUARE INTEGER RSQUARE;
+				IDENTIFIER LSQUARE INTEGER RSQUARE
+                |
+                IDENTIFIER LSQUARE COLON RSQUARE
+                |
+                IDENTIFIER LSQUARE IDENTIFIER COLON RSQUARE
+                |
+                IDENTIFIER LSQUARE COLON IDENTIFIER RSQUARE
+                |
+                IDENTIFIER LSQUARE IDENTIFIER COLON IDENTIFIER RSQUARE;
+
+
+keyvals ::= expression COLON expression 
+            |
+            keyvals COMMA expression COLON expression;
 
 
 numeric ::= INTEGER
